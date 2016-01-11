@@ -1,16 +1,31 @@
 {
   "name": "orientdb-nodejs",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "For testing work with orientdb",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node app/index.js",
+    "test": "node_modules/.bin/mocha"
   },
-  "repository": "https://github.com/techery/orientdb-nodejs",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/techery/orientdb-nodejs"
+  },
+  "engines": {
+    "node": ">=4.1"
+  },
   "author": "Techery",
-  "license": "Proprietary",
+  "license": "UNLICENSED",
+  "private": true,
   "dependencies": {
-    "orientjs": "^2.1.0",
-    "dotenv": "0.5.1"
+    "bunyan": "^1.5.1",
+    "dotenv": "0.5.1",
+    "electrolyte": "^0.2.0",
+    "orientjs": "^2.1.0"
+  },
+  "devDependencies": {
+    "mocha": "^2.3.3",
+    "should": "^8.*",
+    "sinon": "^1.17.2"
   }
 }
