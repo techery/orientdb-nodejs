@@ -9,7 +9,24 @@ exports = module.exports = function (cluster, settings, logger) {
         logger.info(`Worker with pid: ${worker.process.pid} has started!`);
     });
 
-    cluster.on('exit', (deadWorker, code, signal) => {
+    cluster.on('exit', refreshWorker);
+
+    process.on('SIGTERM', stop);
+    process.on('SIGINT', stop);
+
+    function stop() {
+        logger.info('Stopping workers.');
+        cluster.removeListener('exit', refreshWorker);
+        for (var id in cluster.workers) {
+            cluster.workers[id].kill('SIGUSR2');
+        }
+        setTimeout(() => {
+            logger.info('All workers are stopped.');
+            process.exit(0);
+        }, 100);
+    }
+
+    function refreshWorker(deadWorker, code, signal) {
         var oldPID = deadWorker.process.pid;
         if (signal === 'SIGUSR2') {
             logger.info(`Worker with pid: ${oldPID} terminated with user signal from master.`);
@@ -20,15 +37,7 @@ exports = module.exports = function (cluster, settings, logger) {
         var newPID = worker.process.pid;
 
         logger.info(`Worker with pid: ${oldPID} died. Replacing with worker with pid: ${newPID}.`);
-    });
-
-    process.once('SIGTERM', () => {
-        logger.info('Master worker exiting.');
-        for (var id in cluster.workers) {
-            cluster.workers[id].kill('SIGUSR2');
-        }
-        setTimeout(() => process.exit(0), 500);
-    });
+    }
 
     setInterval(() => {
         logger.info('Check workers');

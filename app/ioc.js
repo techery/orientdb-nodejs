@@ -7,5 +7,6 @@ IoC.use(IoC.node_modules('orientjs'));
 IoC.use(IoC.node('app/services'));
 IoC.use(IoC.node('app/core'));
 IoC.use(IoC.node('app/workers'));
+IoC.use(IoC.node('app/repositories'));
 
 module.exports = IoC;
