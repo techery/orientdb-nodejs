@@ -20,7 +20,6 @@ describe('Test settings service', function () {
     it('It has property about database', function () {
         _this.should.have.property('dbName');
         _this.should.have.property('dbParams');
-        _this.should.have.property('dbClassName');
         _this.dbParams.should.have.property('host');
         _this.dbParams.should.have.property('port');
         _this.dbParams.should.have.property('username');
