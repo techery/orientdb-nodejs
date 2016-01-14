@@ -11,7 +11,8 @@ exports = module.exports = function (db) {
     };
 
     Repository.prototype.getRandomRecord = function (min, max) {
-        return this.db.query(`SELECT FROM ${this.name} SKIP ${getRandomInt(min, max)} LIMIT 1`);
+        return this.db.query(`SELECT FROM ${this.name} LIMIT 1`);
+        //return this.db.query(`SELECT FROM ${this.name} SKIP ${getRandomInt(min, max)} LIMIT 1`);
     };
 
     Repository.prototype.make = function (record) {

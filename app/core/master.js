@@ -1,6 +1,9 @@
 'use strict';
 
 exports = module.exports = function (cluster, settings, logger) {
+    var counts = {request: 0, error: 0};
+    var startTime = Date.now();
+
     for (var i = 0; i < settings.workerCount; i++) {
         cluster.fork();
     }
@@ -11,8 +14,14 @@ exports = module.exports = function (cluster, settings, logger) {
 
     cluster.on('exit', refreshWorker);
 
+    cluster.on('message', (m) => {
+        counts[m.type]++;
+    });
+
     process.on('SIGTERM', stop);
     process.on('SIGINT', stop);
+
+    setInterval(checkWorkers, settings.intervalOfWorkerCheck);
 
     function stop() {
         logger.info('Stopping workers.');
@@ -22,30 +31,37 @@ exports = module.exports = function (cluster, settings, logger) {
         }
         setTimeout(() => {
             logger.info('All workers are stopped.');
+            logResult();
             process.exit(0);
         }, 100);
     }
 
     function refreshWorker(deadWorker, code, signal) {
         var oldPID = deadWorker.process.pid;
-        if (signal === 'SIGUSR2') {
-            logger.info(`Worker with pid: ${oldPID} terminated with user signal from master.`);
-            return;
-        }
-
         var worker = cluster.fork();
         var newPID = worker.process.pid;
 
         logger.info(`Worker with pid: ${oldPID} died. Replacing with worker with pid: ${newPID}.`);
     }
 
-    setInterval(() => {
-        logger.info('Check workers');
+    function checkWorkers() {
+        logResult();
         var activeWorkers = Object.keys(cluster.workers).length;
         for (var i = 0; i < (settings.workerCount - activeWorkers); i++) {
             cluster.fork();
         }
-    }, settings.intervalOfWorkerCheck);
+    }
+
+    function logResult() {
+        let time = (Date.now() - startTime)/1000;
+        let requests = counts.request + counts.error;
+        let message = `
+            Time: ${time}.
+            Counts: ${JSON.stringify(counts)}.
+            RPS: ${requests/time}
+            Error level: ${counts.error/requests}`;
+        logger.info(message);
+    }
 };
 
 exports['@singleton'] = true;
