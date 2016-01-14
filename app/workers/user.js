@@ -1,6 +1,8 @@
 'use strict';
 exports = module.exports = function (users, logger, settings) {
     var pool;
+    var isInitiated = false;
+    var currentRequests = 0;
 
     function User() {
     }
@@ -11,13 +13,18 @@ exports = module.exports = function (users, logger, settings) {
             pool = {
                 min: 1 + step * settings.node.id,
                 max: 1 + step * (settings.node.id + 1)
-            }
+            };
+            isInitiated = true;
         });
     };
 
     User.prototype.run = () => {
-        for (var i = 0; i < settings.userPerWorker; i++) {
-            endlessLoop();
+        if (!isInitiated) return;
+
+        if(currentRequests < settings.userPerWorker)
+        {
+            currentRequests++;
+            step();
         }
     };
 
@@ -31,18 +38,14 @@ exports = module.exports = function (users, logger, settings) {
     function step() {
         return users.getRandomRecord(pool.min, pool.max)
             .then((result) => {
+                currentRequests--;
                 process.send({type: 'request'});
             })
             .catch((error) => {
+                currentRequests--;
                 process.send({type: 'error'});
                 logger.error(error);
             });
-    }
-
-    function endlessLoop() {
-        return step().then(endlessLoop).catch((error) => {
-            logger.error(error);
-        });
     }
 };
 

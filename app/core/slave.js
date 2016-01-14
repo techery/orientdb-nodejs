@@ -2,7 +2,9 @@
 
 exports = module.exports = function (user, logger) {
     logger.info('New worker started');
-    user.init().then(user.run);
+    user.init();
+
+    setInterval(user.run, 1);
 
     process.on('SIGTERM', stop);
     process.on('SIGINT', stop);
