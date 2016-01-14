@@ -31,9 +31,10 @@ exports = module.exports = function (users, logger, settings) {
     function step() {
         return users.getRandomRecord(pool.min, pool.max)
             .then((result) => {
-                logger.info('User: ', result);
+                process.send({type: 'request'});
             })
             .catch((error) => {
+                process.send({type: 'error'});
                 logger.error(error);
             });
     }
