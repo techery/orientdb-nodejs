@@ -2,7 +2,6 @@
 
 exports = module.exports = function (cluster, settings, logger) {
     var counts = {request: 0, error: 0};
-    var startTime = Date.now();
 
     for (var i = 0; i < settings.workerCount; i++) {
         cluster.fork();
@@ -53,13 +52,15 @@ exports = module.exports = function (cluster, settings, logger) {
     }
 
     function logResult() {
-        let time = (Date.now() - startTime)/1000;
+        const util = require('util');
         let requests = counts.request + counts.error;
         let message = `
-            Time: ${time}.
+            Time: ${process.uptime()}.
             Counts: ${JSON.stringify(counts)}.
-            RPS: ${requests/time}
-            Error level: ${counts.error/requests}`;
+            RPS: ${requests/process.uptime()}
+            Error level: ${counts.error/requests}
+            Memory: ${util.inspect(process.memoryUsage())
+            }`;
         logger.info(message);
     }
 };
