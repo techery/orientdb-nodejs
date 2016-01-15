@@ -1,6 +1,6 @@
 'use strict';
 
-exports = module.exports = function (cluster, settings, logger) {
+exports = module.exports = function (cluster, settings, logger, metrics) {
     var counts = {request: 0, error: 0};
 
     for (var i = 0; i < settings.workerCount; i++) {
@@ -14,6 +14,7 @@ exports = module.exports = function (cluster, settings, logger) {
     cluster.on('exit', refreshWorker);
 
     cluster.on('message', (m) => {
+        metrics.increment(m.type);
         counts[m.type]++;
     });
 
@@ -59,11 +60,17 @@ exports = module.exports = function (cluster, settings, logger) {
             Counts: ${JSON.stringify(counts)}.
             RPS: ${requests/process.uptime()}
             Error level: ${counts.error/requests}
-            Memory: ${util.inspect(process.memoryUsage())
             }`;
+
+        var memUsage = process.memoryUsage();
+        metrics.gauge('memory.rss', memUsage.rss);
+        metrics.gauge('memory.heapTotal', memUsage.heapTotal);
+        metrics.gauge('memory.heapUsed', memUsage.heapUsed);
+
         logger.info(message);
+        metrics.flush();
     }
 };
 
 exports['@singleton'] = true;
-exports['@require'] = ['cluster', 'settings', 'logger'];
+exports['@require'] = ['cluster', 'settings', 'logger', 'metrics'];
