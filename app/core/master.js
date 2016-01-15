@@ -55,12 +55,13 @@ exports = module.exports = function (cluster, settings, logger, metrics) {
     function logResult() {
         const util = require('util');
         let requests = counts.request + counts.error;
+        let errorLevel = requests ? counts.error/requests : 0;
         let message = `
-            Time: ${process.uptime()}.
-            Counts: ${JSON.stringify(counts)}.
+            Time: ${process.uptime()}
+            Counts: ${JSON.stringify(counts)}
             RPS: ${requests/process.uptime()}
-            Error level: ${counts.error/requests}
-            }`;
+            Error level: ${errorLevel}
+            `;
 
         var memUsage = process.memoryUsage();
         metrics.gauge('memory.rss', memUsage.rss);
