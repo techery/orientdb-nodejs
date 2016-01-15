@@ -19,6 +19,7 @@
   "private": true,
   "dependencies": {
     "bunyan": "^1.5.1",
+    "datadog-metrics": "^0.2.1",
     "dotenv": "0.5.1",
     "electrolyte": "^0.2.0",
     "orientjs": "^2.1.0"

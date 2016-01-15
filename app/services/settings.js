@@ -11,7 +11,7 @@ exports = module.exports = function () {
         },
         port: _getEnv('ENV_PORT', 3000),
         workerCount: _getEnv('NUMBER_OF_WORKERS', require('os').cpus().length),
-        intervalOfWorkerCheck: _getEnv('INTERVAL_OF_WORKER_CHECK_MS', 5000),
+        intervalOfWorkerCheck: _getEnv('INTERVAL_OF_WORKER_CHECK_MS', 1000),
         userPerWorker: _getEnv('USERS_PER_WORKER', 10),
         dbParams: {
             host: _getEnv('DB_HOST', 'localhost'),
@@ -31,8 +31,8 @@ exports = module.exports = function () {
             activityChanceNothing: _getEnv('USER_ACTIVITY_CHANCE_WRITE_POST', 0.8),
             timeoutActivity: _getEnv('USER_ACTIVITY_CHANCE_NOTHING', 0),
         },
-    }
-        ;
+        dataDogApiKey: _getEnv('DATADOG_API_KEY', 0),
+    };
 };
 
 exports['@singleton'] = true;
