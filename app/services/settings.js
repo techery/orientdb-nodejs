@@ -1,18 +1,20 @@
 'use strict';
 
 exports = module.exports = function () {
+    let node_id = _getEnv('NODE_ID', 0);
+    node_id = parseInt(node_id.replace("nodejs-load-runner-",""));
     return {
         appName: _getEnv('ENV_NAME', 'OrintDBPerfomanceTester'),
         environment: _getEnv('NODE_ENV', 'local'),
         node: {
-            id: parseInt(_getEnv('NODE_ID', 0)),
+            id: node_id,
             count: parseInt(_getEnv('NODE_COUNT', 1)),
             minUserCount: parseInt(_getEnv('NODE_MIN_USER_COUNT', 600000)),
         },
         port: _getEnv('ENV_PORT', 3000),
         workerCount: _getEnv('NUMBER_OF_WORKERS', require('os').cpus().length),
         intervalOfWorkerCheck: _getEnv('INTERVAL_OF_WORKER_CHECK_MS', 1000),
-        userPerWorker: _getEnv('USERS_PER_WORKER', 10),
+        userPerWorker: _getEnv('USERS_PER_WORKER', 100),
         dbParams: {
             host: _getEnv('DB_HOST', 'localhost'),
             port: _getEnv('DB_PORT', 2424),
