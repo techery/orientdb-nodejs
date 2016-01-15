@@ -1,9 +1,10 @@
 'use strict';
 
 exports = module.exports = function (db) {
-    function Repository(name) {
+    function Repository(name, cluster_id) {
         this.db = db;
         this.name = name;
+        this.cluster_id = cluster_id;
     };
 
     Repository.prototype.count = function () {
@@ -11,8 +12,8 @@ exports = module.exports = function (db) {
     };
 
     Repository.prototype.getRandomRecord = function (min, max) {
-        return this.db.query(`SELECT FROM ${this.name} LIMIT 1`);
-        //return this.db.query(`SELECT FROM ${this.name} SKIP ${getRandomInt(min, max)} LIMIT 1`);
+        let id = getRandomInt(min, max);
+        return this.db.query(`SELECT FROM ${this.name} WHERE @rid > #${this.cluster_id}:${id} LIMIT 1`);
     };
 
     Repository.prototype.make = function (record) {
