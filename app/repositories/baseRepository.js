@@ -13,7 +13,9 @@ exports = module.exports = function (db) {
 
     Repository.prototype.getRandomRecord = function (min, max) {
         let id = getRandomInt(min, max);
-        return this.db.query(`SELECT FROM ${this.name} WHERE @rid > #${this.cluster_id}:${id} LIMIT 1`);
+        //let query = `SELECT FROM ${this.name} WHERE @rid > #${this.cluster_id}:${id} LIMIT 1`;
+        let query = `select expand(both('FriendsWith')) from #${this.cluster_id}:${id}`;
+        return this.db.query(query);
     };
 
     Repository.prototype.make = function (record) {
