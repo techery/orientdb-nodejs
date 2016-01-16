@@ -13,6 +13,7 @@ exports = module.exports = function (db) {
 
     Repository.prototype.getRandomRecord = function (min, max) {
         let id = getRandomInt(min, max);
+        id = 10000;
         //let query = `SELECT FROM ${this.name} WHERE @rid > #${this.cluster_id}:${id} LIMIT 1`;
         //let query = `select expand(both('FriendsWith')) from #${this.cluster_id}:${id}`;
         let query = `SELECT FROM ${this.name} SKIP ${id} LIMIT 1`;
