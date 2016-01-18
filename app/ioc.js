@@ -10,5 +10,6 @@ IoC.use(IoC.node('app/services'));
 IoC.use(IoC.node('app/core'));
 IoC.use(IoC.node('app/workers'));
 IoC.use(IoC.node('app/repositories'));
+IoC.use(IoC.node('lorem-ipsum'));
 
 module.exports = IoC;

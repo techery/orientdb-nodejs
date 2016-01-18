@@ -4,7 +4,7 @@ var IoC = require('../../app/ioc');
 var _this = IoC.create('settings');
 
 describe('Test settings service', function () {
-    it('It return array', function () {
+    it('It has correct instance', function () {
         _this.should.be.Array;
     });
     it('It has property about env', function () {
