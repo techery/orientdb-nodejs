@@ -1,5 +1,4 @@
 'use strict';
-process.exit();
 require('dotenv').load();
 
 var IoC = require('./ioc');
