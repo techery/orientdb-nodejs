@@ -5,7 +5,7 @@ require('dotenv').load();
 var IoC = require('./ioc');
 var cluster = IoC.create('cluster');
 if (cluster.isMaster) {
-    IoC.create('master');
+  IoC.create('master');
 } else {
-    IoC.create('slave');
+  IoC.create('slave');
 }

@@ -1,0 +1,14 @@
+{
+  "preset": "node-style-guide",
+  "esnext": true,
+  "plugins": [
+    "jscs-jsdoc"
+  ],
+  "jsDoc": {
+    "checkAnnotations": "jsdoc3",
+    "checkTypes": "strictNativeCase",
+    "enforceExistence": {
+      "allExcept": ["exports", "expressions", "paramless-procedures"]
+    }
+  }
+}
