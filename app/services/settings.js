@@ -50,5 +50,5 @@ function _getEnv(key, defaultValue) {
 function _getNodeId() {
   let node_id = _getEnv('NODE_ID', 0);
   if (typeof node_id !== 'string') return node_id;
-  return parseInt(node_id.replace("nodejs-load-runner-", ""));
+  return parseInt(node_id.replace("nodejs-load-generator-", ""));
 }
