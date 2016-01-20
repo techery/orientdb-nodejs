@@ -19,7 +19,7 @@ exports = module.exports = function() {
       username: _getEnv('DB_USERNAME', 'root'),
       password: _getEnv('DB_PASSWORD', 'r13ntDB'),
       pool: {
-        max: 200
+        max: 100
       },
     },
     dbName: _getEnv('DB_DATABASE', 'OrintDBPerfomanceTest'),
