@@ -10,7 +10,7 @@ exports = module.exports = function() {
       minUserCount: parseInt(_getEnv('NODE_MIN_USER_COUNT', 600000)),
     },
     port: _getEnv('ENV_PORT', 3000),
-    workerCount: 1,
+    workerCount: 4,
     intervalOfWorkerCheck: _getEnv('INTERVAL_OF_WORKER_CHECK_MS', 1000),
     userPerWorker: 1,
     dbParams: {
