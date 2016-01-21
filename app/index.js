@@ -1,7 +1,6 @@
 'use strict';
 
 require('dotenv').load();
-process.exit();
 
 var IoC = require('./ioc');
 var cluster = IoC.create('cluster');
