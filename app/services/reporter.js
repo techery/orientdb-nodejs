@@ -49,7 +49,7 @@ exports = module.exports = function(db, logger, EventEmitter) {
       } else {
         this.currentQuery.index++;
       }
-      let query = this.suits[this.currentQuery.suitId].queryMaker();
+      let query = this.suits[this.currentQuery.suitId].queryMaker(this.currentQuery.index-1);
       let startTime = process.hrtime();
       return this.db.query(query).then((r) => {
         this.eventEmitter.emit('queryDone', r, startTime);
@@ -69,7 +69,7 @@ exports = module.exports = function(db, logger, EventEmitter) {
             return sum + value[0] * 1e9 + value[1];
           }, 0) / 1e9;
         let avgTime = timeTotal / suit.timeFrames.length;
-        message = message + `Query: ${suit.alias} Avg.time: ${avgTime} | `;
+        message = message + `${avgTime * 1000} | `;
       });
       this.logger.warn(message);
     }
