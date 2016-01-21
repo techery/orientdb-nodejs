@@ -10,9 +10,9 @@ exports = module.exports = function() {
       minUserCount: parseInt(_getEnv('NODE_MIN_USER_COUNT', 600000)),
     },
     port: _getEnv('ENV_PORT', 3000),
-    workerCount: _getEnv('NUMBER_OF_WORKERS', require('os').cpus().length),
+    workerCount: 2,
     intervalOfWorkerCheck: _getEnv('INTERVAL_OF_WORKER_CHECK_MS', 1000),
-    userPerWorker: 2,
+    userPerWorker: 1,
     dbParams: {
       host: _getEnv('DB_HOST', 'localhost'),
       port: _getEnv('DB_PORT', 2424),
