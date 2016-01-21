@@ -1,65 +1,82 @@
 'use strict';
 
-exports = module.exports = function(db, logger) {
+exports = module.exports = function(db, logger, EventEmitter) {
 
   class Reporter {
-    constructor(db, logger) {
+    constructor(db, logger, EventEmitter) {
       this.db = db;
       this.logger = logger;
       this.suits = [];
+      this.currentQuery = {
+        suitId: 0,
+        index: 0
+      };
+      this.eventEmitter = new EventEmitter();
+      this.eventEmitter.on('queryDone', (result, startTime) => {
+        this.suits[this.currentQuery.suitId].timeFrames.push(process.hrtime(startTime));
+        this.nextQuery();
+      });
+      this.eventEmitter.on('queryError', (error, startTime) => {
+        this.suits[this.currentQuery.suitId].timeFrames.push(process.hrtime(startTime));
+        this.nextQuery();
+      });
+      this.promise = {
+        resolve: () => {
+        },
+        reject: () => {
+        }
+      }
     }
 
     run() {
-      this.promise = new Promise((resolve, reject) => {
-        this.promiseResolve = resolve;
-        this.promiseReject = reject;
-
-        this.loop = setInterval(this.loop)
-        setTimeout(() => {
-          this.write();
-          resolve("result");
-        }, 1000);
+      this.db.open().then(()=>{
+        this.nextQuery();
       });
-
-      return this.promise;
+      return new Promise((resolve, reject) => {
+        this.promise.resolve = resolve;
+        this.promise.reject = reject;
+      });
     }
 
-    makeQuery() {
-
+    nextQuery() {
+      if (this.currentQuery.index >= this.suits[this.currentQuery.suitId].count) {
+        this.currentQuery.index = 1;
+        this.currentQuery.suitId++;
+        if (this.currentQuery.suitId >= this.suits.length) {
+          this.write();
+          return this.promise.resolve();
+        }
+      } else {
+        this.currentQuery.index++;
+      }
+      let query = this.suits[this.currentQuery.suitId].queryMaker();
+      let startTime = process.hrtime();
+      return this.db.query(query).then((r) => {
+        this.eventEmitter.emit('queryDone', r, startTime);
+      }).catch((e) => {
+        this.eventEmitter.emit('queryError', e, startTime);
+      });
     }
 
     addSuit(alias, queryMaker, count) {
-      this.suits[alias] = {queryMaker: queryMaker, count: count, timeFrames: []};
+      this.suits.push({alias: alias, queryMaker: queryMaker, count: count, timeFrames: []});
     }
 
     write() {
-      this.logger.info('Done');
+      this.suits.map((suit)=> {
+        console.log(suit.alias);
+        let timeTotal = suit.timeFrames.reduce(function(sum, value) {
+            return sum + value[0] * 1e9 + value[1];
+          }, 0) / 1e9;
+        let avgTime = timeTotal / suit.timeFrames.length;
+        console.log(suit.timeFrames);
+        console.log(avgTime);
+      });
     }
   }
-  //
-  //function Reporter() {
-  //  this.suits = [];
-  //  this.isRunning = false;
-  //};
-  //
-  //Reporter.prototype.start = function() {
-  //  this.isRunning = true;
-  //};
-  //
-  //Reporter.prototype.addSuit = function(alias, queryMaker, count) {
-  //  this.suits[alias] = {queryMaker: queryMaker, count: count, timeFrames: []};
-  //};
-  //
-  //Reporter.prototype.make = function() {
-  //  this.isRunning = false;
-  //}
-  //
-  //Reporter.prototype.write = function() {
-  //  logger.info('Done');
-  //};
 
-  return new Reporter(db, logger);
+  return new Reporter(db, logger, EventEmitter);
 };
 
 exports['@singleton'] = true;
-exports['@require'] = ['db', 'logger'];
+exports['@require'] = ['db', 'logger', 'events'];
