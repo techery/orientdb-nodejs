@@ -17,7 +17,7 @@ exports = module.exports = function(db, logger, EventEmitter) {
         this.nextQuery();
       });
       this.eventEmitter.on('queryError', (error, startTime) => {
-        this.suits[this.currentQuery.suitId].timeFrames.push(process.hrtime(startTime));
+        this.suits[this.currentQuery.suitId].errors.push(error);
         this.nextQuery();
       });
       this.promise = {
@@ -59,19 +59,22 @@ exports = module.exports = function(db, logger, EventEmitter) {
     }
 
     addSuit(alias, queryMaker, count) {
-      this.suits.push({alias: alias, queryMaker: queryMaker, count: count, timeFrames: []});
+      this.suits.push({alias: alias, queryMaker: queryMaker, count: count, timeFrames: [], errors: []});
     }
 
     write() {
-      let message = ''
+      let message = '';
+      let errors = '';
       this.suits.map((suit)=> {
         let timeTotal = suit.timeFrames.reduce(function(sum, value) {
             return sum + value[0] * 1e9 + value[1];
           }, 0) / 1e9;
         let avgTime = timeTotal / suit.timeFrames.length;
         message = message + `${avgTime * 1000} | `;
+        errors = erros + `${suit.errors/(suits.timeFrames.length+suit.errors.length)} | `;
       });
       this.logger.warn(message);
+      this.logger.warn(errors);
     }
   }
 
