@@ -4,7 +4,7 @@ require('dotenv').load();
 var IoC = require('./ioc');
 var reporter = IoC.create('reporter');
 
-var iterations = 3;
+var iterations = 25;
 
 var randomUsers = [ '#12:157708',
   '#12:17666',
