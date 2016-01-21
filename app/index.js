@@ -1,4 +1,6 @@
 'use strict';
+
+process.exit();
 require('dotenv').load();
 
 
