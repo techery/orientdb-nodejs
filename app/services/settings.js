@@ -32,6 +32,8 @@ exports = module.exports = function() {
       timeoutActivity: _getEnv('USER_ACTIVITY_CHANCE_NOTHING', 0),
     },
     dataDogApiKey: _getEnv('DATADOG_API_KEY', 0),
+    dataDogAppKey: _getEnv('DATADOG_APP_KEY', 0),
+    dataDogApiUrl: _getEnv('DATADOG_API_URL', 0),
   };
 };
 
