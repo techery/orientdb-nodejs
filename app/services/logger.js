@@ -6,6 +6,7 @@ exports = module.exports = function(bunyan, settings) {
     streams: [
       {level: 'debug', stream: process.stdout},
       {level: 'error', path: 'logs/error.log'},
+      {level: 'warn', path: 'logs/log.log'},
     ],
   });
   if (settings.environment === 'test') {

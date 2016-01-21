@@ -63,15 +63,15 @@ exports = module.exports = function(db, logger, EventEmitter) {
     }
 
     write() {
+      let message = ''
       this.suits.map((suit)=> {
-        console.log(suit.alias);
         let timeTotal = suit.timeFrames.reduce(function(sum, value) {
             return sum + value[0] * 1e9 + value[1];
           }, 0) / 1e9;
         let avgTime = timeTotal / suit.timeFrames.length;
-        console.log(suit.timeFrames);
-        console.log(avgTime);
+        message = message + `Query: ${suit.alias} Avg.time: ${avgTime} | `;
       });
+      this.logger.warn(message);
     }
   }
 
