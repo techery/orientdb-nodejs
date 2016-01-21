@@ -4,7 +4,7 @@ require('dotenv').load();
 var IoC = require('./ioc');
 var reporter = IoC.create('reporter');
 
-var iterations = 100;
+var iterations = 20;
 
 reporter.addSuit('getUserPosts', () => `SELECT expand(out('HasPost')) FROM ${getRandomUser()} ORDER BY created_at DESC LIMIT 50`, iterations);
 reporter.addSuit('getUserFriends', () => `SELECT expand(both('FriendsWith')) FROM ${getRandomUser()} LIMIT 100`, iterations);
