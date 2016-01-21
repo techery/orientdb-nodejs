@@ -42,7 +42,7 @@ exports = module.exports = function(users, logger, settings, posts) {
 
   function step() {
     pool.min++;
-    let postCount = getRandomInt(1);
+    let postCount = getRandomInt(1,1);
     let newPosts = [];
     for (let i = 0; i < postCount; i++) {
       newPosts.push(posts.createRandom(pool.min))
