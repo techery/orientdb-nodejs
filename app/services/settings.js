@@ -12,7 +12,7 @@ exports = module.exports = function() {
     port: _getEnv('ENV_PORT', 3000),
     workerCount: 1,
     intervalOfWorkerCheck: _getEnv('INTERVAL_OF_WORKER_CHECK_MS', 1000),
-    userPerWorker: 1,
+    userPerWorker: 50,
     dbParams: {
       host: _getEnv('DB_HOST', 'localhost'),
       port: _getEnv('DB_PORT', 2424),
