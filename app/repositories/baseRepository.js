@@ -15,7 +15,7 @@ exports = module.exports = function(db) {
     let id = getRandomInt(min, max);
     //let query = `SELECT FROM ${this.name} WHERE @rid > #${this.clusterId}:${id} LIMIT 1`;
     //let query = `select expand(both('FriendsWith')) from #${this.clusterId}:${id}`;
-    let query = `SELECT expand(both('FriendsWith').out('HasPost')) FROM ${id} ORDER BY created_at DESC LIMIT 50`;
+    let query = `SELECT expand(both('FriendsWith').out('HasPost')) FROM ${this.clusterId}:${id} ORDER BY created_at DESC LIMIT 50`;
     return this.db.query(query);
   };
 
