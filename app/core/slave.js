@@ -16,4 +16,4 @@ exports = module.exports = function(user, logger) {
   }
 };
 
-exports['@require'] = ['postGenerator', 'logger'];
+exports['@require'] = ['user', 'logger'];
