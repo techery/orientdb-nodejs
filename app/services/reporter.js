@@ -9,14 +9,17 @@ exports = module.exports = function(db, logger, EventEmitter) {
       this.suits = [];
       this.currentQuery = {
         suitId: 0,
-        index: 0
+        index: 0,
+        timeout: undefined
       };
       this.eventEmitter = new EventEmitter();
       this.eventEmitter.on('queryDone', (result, startTime) => {
+        clearTimeout(this.currentQuery.timeout);
         this.suits[this.currentQuery.suitId].timeFrames.push(process.hrtime(startTime));
         this.nextQuery();
       });
       this.eventEmitter.on('queryError', (error, startTime) => {
+        clearTimeout(this.currentQuery.timeout);
         this.suits[this.currentQuery.suitId].errors.push(error);
         this.nextQuery();
       });
@@ -29,7 +32,7 @@ exports = module.exports = function(db, logger, EventEmitter) {
     }
 
     run() {
-      this.db.open().then(()=>{
+      this.db.open().then(()=> {
         this.nextQuery();
       });
       return new Promise((resolve, reject) => {
@@ -41,16 +44,20 @@ exports = module.exports = function(db, logger, EventEmitter) {
     nextQuery() {
       if (this.currentQuery.index >= this.suits[this.currentQuery.suitId].count) {
         this.currentQuery.index = 1;
-        this.currentQuery.suitId++;
-        if (this.currentQuery.suitId >= this.suits.length) {
+        if (this.currentQuery.suitId >= this.suits.length - 1) {
           this.write();
           return this.promise.resolve();
+        } else {
+          this.currentQuery.suitId++;
         }
       } else {
         this.currentQuery.index++;
       }
-      let query = this.suits[this.currentQuery.suitId].queryMaker(this.currentQuery.index-1);
+      let query = this.suits[this.currentQuery.suitId].queryMaker(this.currentQuery.index - 1);
       let startTime = process.hrtime();
+      this.currentQuery.timeout = setTimeout(() => {
+        this.eventEmitter.emit('queryError', new Error('Break by timeout'), startTime);
+      }, 5000);
       return this.db.query(query).then((r) => {
         this.eventEmitter.emit('queryDone', r, startTime);
       }).catch((e) => {
@@ -71,7 +78,7 @@ exports = module.exports = function(db, logger, EventEmitter) {
           }, 0) / 1e9;
         let avgTime = timeTotal / suit.timeFrames.length;
         message = message + `${avgTime * 1000} | `;
-        errors = erros + `${suit.errors/(suits.timeFrames.length+suit.errors.length)} | `;
+        errors = errors + `${suit.errors / (suit.timeFrames.length + suit.errors.length)} | `;
       });
       this.logger.warn(message);
       this.logger.warn(errors);
