@@ -78,7 +78,7 @@ exports = module.exports = function(db, logger, EventEmitter) {
           }, 0) / 1e9;
         let avgTime = timeTotal / suit.timeFrames.length;
         message = message + `${avgTime * 1000} | `;
-        errors = errors + `${suit.errors / (suit.timeFrames.length + suit.errors.length)} | `;
+        errors = errors + `${suit.errors.length / (suit.timeFrames.length + suit.errors.length)} | `;
       });
       this.logger.warn(message);
       this.logger.warn(errors);
