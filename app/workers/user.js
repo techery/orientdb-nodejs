@@ -35,7 +35,7 @@ exports = module.exports = function(users, logger, settings) {
   return new User();
 
   function step() {
-    return users.getRandomRecord(pool.min, pool.max)
+    return users.getRandomRecord(1, 600000)
       .then((result) => {
         currentRequests--;
         process.send({type: 'request'});
