@@ -1,7 +1,15 @@
 'use strict';
 
 exports = module.exports = function(cluster, settings, logger, metrics) {
-  var counts = {request: 0, error: 0};
+  var queries = {
+    allQueries: {timeFrames: [], processing: 0},
+    createPost: {timeFrames: [], processing: 0},
+    updatePost: {timeFrames: [], processing: 0},
+    getUserInfo: {timeFrames: [], processing: 0},
+    getUserPosts: {timeFrames: [], processing: 0},
+    getUserFriends: {timeFrames: [], processing: 0},
+    getUserFriendPosts: {timeFrames: [], processing: 0},
+  }
 
   for (var i = 0; i < settings.workerCount; i++) {
     cluster.fork();
@@ -14,8 +22,16 @@ exports = module.exports = function(cluster, settings, logger, metrics) {
   cluster.on('exit', refreshWorker);
 
   cluster.on('message', (m) => {
-    metrics.increment(m.type);
-    counts[m.type]++;
+    if (m.type === 'start') {
+      queries.allQueries.processing++;
+      queries[m.queryType].processing++;
+    }
+    if (m.type === 'end') {
+      queries.allQueries.processing--;
+      queries.allQueries.timeFrames.push(m.time);
+      queries[m.queryType].processing--;
+      queries[m.queryType].timeFrames.push(m.time);
+    }
   });
 
   process.on('SIGTERM', stop);
@@ -53,25 +69,37 @@ exports = module.exports = function(cluster, settings, logger, metrics) {
   }
 
   function logResult() {
-    const util = require('util');
-    let requests = counts.request + counts.error;
-    let errorLevel = requests ? counts.error / requests : 0;
-    let message = `
-            Time: ${process.uptime()}
-            Counts: ${JSON.stringify(counts)}
-            RPS: ${requests / process.uptime()}
-            Error level: ${errorLevel}
-            `;
-
-    var memUsage = process.memoryUsage();
-    metrics.gauge('memory.rss', memUsage.rss);
-    metrics.gauge('memory.heapTotal', memUsage.heapTotal);
-    metrics.gauge('memory.heapUsed', memUsage.heapUsed);
-
-    logger.info(message);
+    let queryType;
+    for (queryType in queries) {
+      metrics.gauge(`${queryType}.processing`, queries[queryType].processing);
+      if (queries[queryType].timeFrames.length) {
+        metrics.gauge(`${queryType}.done`, queries[queryType].timeFrames.length);
+        metrics.gauge(`${queryType}.time.max`, makeMax(queries[queryType].timeFrames) / 1e9);
+        metrics.gauge(`${queryType}.time.min`, makeMin(queries[queryType].timeFrames) / 1e9);
+        metrics.gauge(`${queryType}.time.avg`, makeAvg(queries[queryType].timeFrames) / 1e9);
+        queries[queryType].timeFrames = [];
+      }
+    }
     metrics.flush();
   }
-};
+
+  function makeAvg(timeFrames) {
+    let timeTotal = timeFrames.reduce(function(sum, value) {
+      return sum + value;
+    }, 0);
+    return timeTotal / timeFrames.length;
+  }
+
+  function makeMin(timeFrames) {
+    return Math.min.apply(null, timeFrames);
+  }
+
+  function makeMax(timeFrames) {
+    return Math.max.apply(null, timeFrames);
+  }
+
+}
+;
 
 exports['@singleton'] = true;
-exports['@require'] = ['cluster', 'settings', 'logger', 'metrics'];
+exports['@require'] = ['cluster', 'settings', 'logger', 'metrics', 'randomRepository'];

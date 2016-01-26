@@ -4,7 +4,7 @@ exports = module.exports = function(datadog, settings, os) {
   return new datadog.BufferedMetricsLogger({
     apiKey: settings.dataDogApiKey,
     host: os.hostname,
-    prefix: `node_${settings.node.id}.`,
+    prefix: `galkin_test.`,
     flushIntervalSeconds: 0,
   });
 };

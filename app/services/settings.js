@@ -4,22 +4,16 @@ exports = module.exports = function() {
   return {
     appName: _getEnv('ENV_NAME', 'OrintDBPerfomanceTester'),
     environment: _getEnv('NODE_ENV', 'local'),
-    node: {
-      id: _getNodeId(),
-      count: parseInt(_getEnv('NODE_COUNT', 1)),
-      minUserCount: parseInt(_getEnv('NODE_MIN_USER_COUNT', 600000)),
-    },
-    port: _getEnv('ENV_PORT', 3000),
-    workerCount: 2,
+    port: _getEnv('ENV_PORT', 8000),
+    workerCount: _getEnv('NUMBER_OF_WORKERS', require('os').cpus().length),
     intervalOfWorkerCheck: _getEnv('INTERVAL_OF_WORKER_CHECK_MS', 1000),
-    userPerWorker: 50,
     dbParams: {
-      host: _getEnv('DB_HOST', 'localhost'),
+      host: _getEnv('DB_HOST', '52.35.253.219'),
       port: _getEnv('DB_PORT', 2424),
-      username: _getEnv('DB_USERNAME', 'root'),
-      password: _getEnv('DB_PASSWORD', 'r13ntDB'),
+      username: _getEnv('DB_USERNAME', 'admin'),
+      password: _getEnv('DB_PASSWORD', 'admin'),
     },
-    dbName: _getEnv('DB_DATABASE', 'OrintDBPerfomanceTest'),
+    dbName: _getEnv('DB_DATABASE', 'worldventures'),
     userInfo: {
       itemPerFeed: _getEnv('USER_ITEM_PER_FEED', 50),
       chanceLike: _getEnv('USER_CHANCE_LIKE', 0.02),
@@ -31,7 +25,7 @@ exports = module.exports = function() {
       activityChanceNothing: _getEnv('USER_ACTIVITY_CHANCE_WRITE_POST', 0.8),
       timeoutActivity: _getEnv('USER_ACTIVITY_CHANCE_NOTHING', 0),
     },
-    dataDogApiKey: _getEnv('DATADOG_API_KEY', 0),
+    dataDogApiKey: _getEnv('DATADOG_API_KEY', '5a745555c4564194a7bece51d619a033'),
   };
 };
 
