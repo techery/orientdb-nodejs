@@ -2,13 +2,13 @@
 
 exports = module.exports = function(cluster, settings, logger, metrics) {
   var queries = {
-    allQueries: {timeFrames: [], processing: 0},
-    createPost: {timeFrames: [], processing: 0},
-    updatePost: {timeFrames: [], processing: 0},
-    getUserInfo: {timeFrames: [], processing: 0},
-    getUserPosts: {timeFrames: [], processing: 0},
-    getUserFriends: {timeFrames: [], processing: 0},
-    getUserFriendPosts: {timeFrames: [], processing: 0},
+    allQueries: {timeFrames: [], processing: 0, errors: 0},
+    createPost: {timeFrames: [], processing: 0, errors: 0},
+    updatePost: {timeFrames: [], processing: 0, errors: 0},
+    getUserInfo: {timeFrames: [], processing: 0, errors: 0},
+    getUserPosts: {timeFrames: [], processing: 0, errors: 0},
+    getUserFriends: {timeFrames: [], processing: 0, errors: 0},
+    getUserFriendPosts: {timeFrames: [], processing: 0, errors: 0},
   }
 
   for (var i = 0; i < settings.workerCount; i++) {
@@ -31,6 +31,12 @@ exports = module.exports = function(cluster, settings, logger, metrics) {
       queries.allQueries.timeFrames.push(m.time);
       queries[m.queryType].processing--;
       queries[m.queryType].timeFrames.push(m.time);
+    }
+    if (m.type === 'error') {
+      queries.allQueries.processing--;
+      queries.allQueries.errors++;
+      queries[m.queryType].processing--;
+      queries[m.queryType].errors++;
     }
   });
 
@@ -72,6 +78,8 @@ exports = module.exports = function(cluster, settings, logger, metrics) {
     let queryType;
     for (queryType in queries) {
       metrics.gauge(`${queryType}.processing`, queries[queryType].processing);
+      metrics.gauge(`${queryType}.errors`, queries[queryType].errors);
+      queries[queryType].errors = 0;
       if (queries[queryType].timeFrames.length) {
         metrics.gauge(`${queryType}.done`, queries[queryType].timeFrames.length);
         metrics.gauge(`${queryType}.time.max`, makeMax(queries[queryType].timeFrames) / 1e9);
