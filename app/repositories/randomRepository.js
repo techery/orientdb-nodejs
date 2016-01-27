@@ -33,7 +33,7 @@ exports = module.exports = function(db, generator) {
     }
 
     updatePost() {
-      return `UPDATE Post SET short_description='Updated' WHERE @rid = #32:${getRandomInt(1, 60000000)}}`;
+      return `UPDATE Post SET short_description='Updated' WHERE @rid = #32:${getRandomInt(1, 60000000)}`;
     }
 
     getUserInfo() {
