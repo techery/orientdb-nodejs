@@ -14,17 +14,6 @@ exports = module.exports = function() {
       password: _getEnv('DB_PASSWORD', 'admin'),
     },
     dbName: _getEnv('DB_DATABASE', 'worldventures'),
-    userInfo: {
-      itemPerFeed: _getEnv('USER_ITEM_PER_FEED', 50),
-      chanceLike: _getEnv('USER_CHANCE_LIKE', 0.02),
-      chanceRead: _getEnv('USER_CHANCE_READ', 0.02),
-      chanceComment: _getEnv('USER_CHANCE_COMMENT', 0.005),
-      activityChanceRemoveFriendship: _getEnv('USER_ACTIVITY_TIMEOUT', 300),
-      activityChanceNewFriendship: _getEnv('USER_ACTIVITY_CHANCE_REMOVE_FRIENDSHIP', 0.05),
-      activityChanceWritePost: _getEnv('USER_ACTIVITY_CHANCE_NEW_FRIENDSHIP', 0.15),
-      activityChanceNothing: _getEnv('USER_ACTIVITY_CHANCE_WRITE_POST', 0.8),
-      timeoutActivity: _getEnv('USER_ACTIVITY_CHANCE_NOTHING', 0),
-    },
     dataDogApiKey: _getEnv('DATADOG_API_KEY', '5a745555c4564194a7bece51d619a033'),
   };
 };
