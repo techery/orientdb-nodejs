@@ -19,7 +19,7 @@ exports = module.exports = function(express, randomRepository, settings) {
           })
           .catch((e) => {
             let timing = process.hrtime(startTime);
-            process.send({type: 'end', queryType: queryType, time: timing[0] * 1e9 + timing[1]});
+            process.send({type: 'error', queryType: queryType, time: timing[0] * 1e9 + timing[1]});
             res.send(queryType).end();
           });
       });
