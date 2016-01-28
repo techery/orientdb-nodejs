@@ -66,6 +66,47 @@ graphs.push(
 
 graphs.push(
   {
+    title: "Disk latency (ms, by device)",
+    definition: {
+      "viz": "timeseries",
+      events: [],
+      "requests": [
+        {
+          "q": "max:system.io.await{host:techery-orientdb} by {device}",
+          "type": "area",
+          "conditional_formats": []
+        }
+      ],
+
+    }
+  }
+);
+
+graphs.push(
+  {
+    title: "system IO",
+    definition: {
+      "viz": "timeseries",
+      events: [],
+      "requests": [
+        {
+          "q": "avg:system.io.w_s{*}",
+          "conditional_formats": [],
+          "type": "line",
+          "aggregator": "avg"
+        },
+        {
+          "q": "avg:system.io.r_s{*}",
+          "type": "line"
+        }
+      ]
+
+    }
+  }
+);
+
+graphs.push(
+  {
     title: "JVM",
     definition: {
       "viz": "timeseries",
