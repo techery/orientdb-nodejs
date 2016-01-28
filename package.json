@@ -7,7 +7,7 @@
     "start": "node app/index.js",
     "test": "node_modules/.bin/mocha",
     "report": "node app/report.js",
-    "updateTimeboard": "node app/create_timeboard.js"
+    "createTimeboard": "node app/create_timeboard.js"
   },
   "repository": {
     "type": "git",

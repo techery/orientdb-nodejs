@@ -13,8 +13,8 @@ exports = module.exports = function(db, generator) {
 
     makeQueryType() {
       let chance = Math.random();
-      if (chance <= 0.01) return 'createPost';
-      if (chance <= 0.02) return 'updatePost';
+      //if (chance <= 0.01) return 'createPost';
+      //if (chance <= 0.02) return 'updatePost';
       if (chance <= 0.05) return 'getUserInfo';
       if (chance <= 0.15) return 'getUserPosts';
       if (chance <= 0.25) return 'getUserFriends';
