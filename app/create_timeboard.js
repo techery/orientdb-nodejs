@@ -18,7 +18,7 @@ graphs.push(
       events: [],
       "requests": [
         {
-          "q": "avg:system.mem.free{host:techery-orientdb}, avg:system.mem.used{host:techery-orientdb}, avg:system.mem.cached{*}",
+          "q": "avg:system.mem.free{host:techery-orientdb}, avg:system.mem.used{host:techery-orientdb}, avg:system.mem.cached{host:techery-orientdb}",
           "aggregator": "avg",
           "conditional_formats": [],
           "type": "area"
@@ -45,6 +45,27 @@ graphs.push(
     }
   }
 );
+
+var coresRequests = [];
+for (var i = 0; i < 32; i++) {
+  coresRequests.push({
+    "q": `avg:system.core.system{core:${i},name:techery-orientdb-perf}`,
+    "aggregator": "avg",
+    "conditional_formats": [],
+    "type": "line"
+  });
+
+}
+graphs.push(
+  {
+    title: `Cores`,
+    definition: {
+      "viz": "timeseries",
+      events: [],
+      "requests": coresRequests
+    }
+  });
+
 
 graphs.push(
   {
@@ -90,13 +111,17 @@ graphs.push(
       events: [],
       "requests": [
         {
-          "q": "avg:system.io.w_s{*}",
+          "q": "avg:system.io.w_s{host:techery-orientdb}",
           "conditional_formats": [],
           "type": "line",
           "aggregator": "avg"
         },
         {
-          "q": "avg:system.io.r_s{*}",
+          "q": "avg:system.io.r_s{host:techery-orientdb}",
+          "type": "line"
+        },
+        {
+          "q": "avg:system.io.await{host:techery-orientdb}",
           "type": "line"
         }
       ]
