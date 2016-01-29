@@ -8,7 +8,22 @@ exports = module.exports = function(express, randomRepository, settings) {
       this.server = this.app.listen(settings.port);
 
       this.app.all('/*', function(req, res) {
-        let queryType = randomRepository.makeQueryType();
+        let sum = 0;
+        let queryType;
+        for (queryType in req.query.chance) {
+          if(randomRepository.knownQueryTypes.indexOf(queryType) === -1) {
+            res.send(`Unknown query type ${queryType}`).end();
+          }
+          sum = sum + parseInt(req.query.chance[queryType]);
+        }
+        let chance = Math.floor(Math.random() * sum) + 1;
+        for (queryType in req.query.chance) {
+          if(chance <= req.query.chance[queryType]) {
+            break;
+          } else {
+            chance = chance - req.query.chance[queryType];
+          }
+        }
         process.send({type: 'start', queryType: queryType});
         let startTime = process.hrtime();
         randomRepository.query(queryType)

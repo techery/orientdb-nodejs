@@ -4,21 +4,19 @@ exports = module.exports = function(db, generator) {
   class randomRepository {
     constructor(db) {
       this.db = db;
+      this.knownQueryTypes = [
+        'createPost',
+        'updatePost',
+        'getUserInfo',
+        'getUserPosts',
+        'getUserFriends',
+        'getUserFriendPosts',
+      ];
     }
 
     query(queryType) {
       let currentQuery = this[queryType]();
       return this.db.query(currentQuery).then(() => queryType);
-    }
-
-    makeQueryType() {
-      let chance = Math.random();
-      //if (chance <= 0.01) return 'createPost';
-      //if (chance <= 0.02) return 'updatePost';
-      if (chance <= 0.05) return 'getUserInfo';
-      if (chance <= 0.15) return 'getUserPosts';
-      if (chance <= 0.25) return 'getUserFriends';
-      return 'getUserFriendPosts';
     }
 
     createPost() {
