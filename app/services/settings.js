@@ -13,7 +13,7 @@ exports = module.exports = function() {
       username: _getEnv('DB_USERNAME', 'admin'),
       password: _getEnv('DB_PASSWORD', 'admin'),
       pool: {
-        max: 3
+        max: 2
       },
     },
     dbName: _getEnv('DB_DATABASE', 'worldventures'),
