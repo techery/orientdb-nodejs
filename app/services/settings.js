@@ -12,9 +12,6 @@ exports = module.exports = function() {
       port: _getEnv('DB_PORT', 2424),
       username: _getEnv('DB_USERNAME', 'admin'),
       password: _getEnv('DB_PASSWORD', 'admin'),
-      pool: {
-        max: 10
-      },
     },
     dbName: _getEnv('DB_DATABASE', 'worldventures'),
     dataDogApiKey: _getEnv('DATADOG_API_KEY', '5a745555c4564194a7bece51d619a033'),
