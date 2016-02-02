@@ -11,5 +11,5 @@ while read test_case; do
   echo ""
   echo "Test case ended"
   echo "Waiting for 1 minute"
-  sleep 1m
+  sleep 5m
 done < "$test_cases"
