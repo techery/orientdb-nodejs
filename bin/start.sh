@@ -13,7 +13,7 @@ function sendEvent() {
           "title": "Apache benchmark '$status'",
           "text": "'$url'",
           "priority": "normal",
-          "tags": ["environment:test", "concurency:'$concurrency'"],
+          "tags": ["environment:test", "concurrency:'$concurrency'"],
           "alert_type": "info"
       }' \
     'https://app.datadoghq.com/api/v1/events?api_key=5a745555c4564194a7bece51d619a033'
@@ -30,6 +30,7 @@ requests=$1;
 concurrency=$2;
 url=$3;
 status='start';
+echo 'Concurrency: ' $concurrency
 sendEvent;
 ab -n $requests -c $concurrency -l "$url"
 status='end';

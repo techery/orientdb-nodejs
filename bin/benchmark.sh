@@ -10,6 +10,6 @@ while read test_case; do
   $start_test $test_case
   echo ""
   echo "Test case ended"
-  echo "Waiting for 1 minute"
+  echo "Waiting for 5 minutes"
   sleep 5m
 done < "$test_cases"
