@@ -1,20 +1,22 @@
 'use strict';
 var dogapi = require('dogapi');
+var json2csv = require('json2csv');
+var fs = require('fs');
+
 const options = {
   api_key: '5a745555c4564194a7bece51d619a033',
   app_key: '257eaa2e568849f86ac765137411959df31ec6b8',
 };
-//let queries = ['createPost', 'updatePost', 'getUserInfo', 'getUserPosts', 'getUserFriends', 'getUserFriendPosts', 'allQueries'];
-let queries = ['createPost'];
+let queries = ['createPost', 'updatePost', 'getUserInfo', 'getUserPosts', 'getUserFriends', 'getUserFriendPosts', 'allQueries'];
 
 dogapi.initialize(options);
 
 let now = parseInt(new Date().getTime() / 1000);
-let then = now - 60 * 60 * 1 * 1;
+let then = now - 60 * 60 * 2 * 1;
 let callbackCount;
 let parameters = {
   tags: "environment:test",
-  priority: 'low'
+  priority: 'normal'
 };
 let reports = [];
 
@@ -57,6 +59,10 @@ dogapi.event.query(then, now, parameters, function(err, res) {
       saveCounts(i, queries[currentQueryId], 'sum', 'time.avg', 'avg');
     }
   }
+  if (reports.length === 0) {
+    console.log('We have not cases');
+    process.exit();
+  }
 });
 
 
@@ -84,6 +90,7 @@ function prepareReport() {
 }
 
 function writeReport() {
+  let result = [];
   for (let i = 0; i < reports.length; i++) {
     for (let currentQueryId = 0; currentQueryId < queries.length; currentQueryId++) {
       //cleaning empty data
@@ -128,13 +135,27 @@ function writeReport() {
 
       }
       params.avg = params.timeSum / params.done;
-      console.dir(params);
+      result.push(params);
     }
   }
-  process.exit();
+  writeCVS(result);
 }
 
 setTimeout(() => {
   console.log('Too long time');
   process.exit();
 }, 30000);
+
+function writeCVS(data) {
+
+  let fields = ['tags[0]', 'url', 'type', 'min', 'max', 'avg', 'done'];
+  json2csv({data: data, fields: fields}, function(err, csv) {
+    if (err) console.log(err);
+    console.log(csv);
+    fs.writeFile('result.csv', csv, function(err) {
+      if (err) throw err;
+      console.log('file saved');
+      process.exit();
+    });
+  });
+}
