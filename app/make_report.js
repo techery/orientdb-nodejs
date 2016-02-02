@@ -4,12 +4,12 @@ const options = {
   api_key: '5a745555c4564194a7bece51d619a033',
   app_key: '257eaa2e568849f86ac765137411959df31ec6b8',
 };
-let queries = ['createPost', 'updatePost', 'getUserInfo', 'getUserPosts', 'getUserFriends', 'getUserFriendPosts'];
+let queries = ['createPost', 'updatePost', 'getUserInfo', 'getUserPosts', 'getUserFriends', 'getUserFriendPosts', 'allQueries'];
 
 dogapi.initialize(options);
 
 let now = parseInt(new Date().getTime() / 1000);
-let then = now - 60 * 60 * 24 * 5;
+let then = now - 60 * 60 * 0.5 * 1;
 let callbackCount;
 let parameters = {
   tags: "environment:test",
@@ -42,44 +42,97 @@ dogapi.event.query(then, now, parameters, function(err, res) {
     }
   }
 
-  callbackCount = reports.length * queries.length * 2;
-  for (let i = 0; i < reports.length; i++) {
-    for (let currentQueryId = 0; currentQueryId < queries.length; currentQueryId++) {
-      reports[i][queries[currentQueryId]] = {};
-      //saveCounts(i, queries[currentQueryId], 'sum', 'done');
-      saveCounts(i, queries[currentQueryId], 'min', 'min');
-      saveCounts(i, queries[currentQueryId], 'max', 'max');
-      //saveCounts(i, queries[currentQueryId], 'avg', 'avg');
-    }
+  callbackCount = reports.length * queries.length * 4;
+  callbackCount = queries.length * 4;
+  let i = 0;
+  //for (let i = 0; i < reports.length; i++) {
+  for (let currentQueryId = 0; currentQueryId < queries.length; currentQueryId++) {
+    reports[i][queries[currentQueryId]] = {};
+    saveCounts(i, queries[currentQueryId], 'sum', 'done', 'done');
+    saveCounts(i, queries[currentQueryId], 'min', 'time.min', 'min');
+    saveCounts(i, queries[currentQueryId], 'max', 'time.max', 'max');
+    saveCounts(i, queries[currentQueryId], 'sum', 'time.avg', 'avg');
   }
+  //}
 });
 
 
-function saveCounts(i, queryType, prefix, postfix) {
+function saveCounts(i, queryType, prefix, postfix, type) {
   const query = `${prefix}:orientDB_perfomance.${queryType}.${postfix}{*}`;
   dogapi.metric.query(reports[i].start, reports[i].end, query, function(err, res) {
     if (err) {
       console.log(err);
-      return writeReports();
+      return prepareReport();
     }
     if (res.series === undefined || res.series.length === 0) {
-      reports[i][queryType][postfix] = [];
-      return writeReports();
+      reports[i][queryType][type] = [];
+      return prepareReport();
     }
-    reports[i][queryType][postfix] = res.series[0].pointlist;
-    return writeReports();
+    reports[i][queryType][type] = res.series[0].pointlist;
+    return prepareReport();
   });
 }
 
-function writeReports() {
+function prepareReport() {
   callbackCount--;
   if (callbackCount === 0) {
-    console.dir(reports);
-    process.exit();
+    writeReport();
   }
+}
+
+function writeReport() {
+  for (let i = 0; i < reports.length; i++) {
+    for (let currentQueryId = 0; currentQueryId < queries.length; currentQueryId++) {
+      //cleaning empty data
+      if(!reports[i][queries[currentQueryId]].done) continue;
+        while (reports[i][queries[currentQueryId]].done[0] === 0) {
+          reports[i][queries[currentQueryId]].done.shift();
+          reports[i][queries[currentQueryId]].min.shift();
+          reports[i][queries[currentQueryId]].max.shift();
+          reports[i][queries[currentQueryId]].avg.shift();
+          reports[i].start++;
+        }
+        while (reports[i][queries[currentQueryId]].done[reports[i][queries[currentQueryId]].length - 1] === 0) {
+          reports[i][queries[currentQueryId]].done.pop();
+          reports[i][queries[currentQueryId]].min.pop();
+          reports[i][queries[currentQueryId]].max.pop();
+          reports[i][queries[currentQueryId]].avg.pop();
+          reports[i].end--;
+        }
+
+      let params = {
+        type: queries[currentQueryId],
+        url: reports[i].url,
+        done: 0,
+        timeSum: 0,
+        min: Infinity,
+        max: -Infinity
+      };
+      params.min = Math.min.apply(null, reports[i][queries[currentQueryId]].min);
+      params.max = Math.max.apply(null, reports[i][queries[currentQueryId]].max);
+      for (let timepoint = 0; timepoint < reports[i][queries[currentQueryId]].done.length; timepoint++) {
+        let min = parseFloat(reports[i][queries[currentQueryId]].min[timepoint][1]);
+        let max = parseFloat(reports[i][queries[currentQueryId]].max[timepoint][1]);
+        let done = parseFloat(reports[i][queries[currentQueryId]].done[timepoint][1]);
+        let timeAvg = parseFloat(reports[i][queries[currentQueryId]].avg[timepoint][1]);
+        params.done = params.done + done;
+        params.timeSum = params.timeSum + done * timeAvg;
+        if (params.min > min) {
+          params.min = min;
+        }
+        if (params.max < max) {
+          params.max = max;
+        }
+
+      }
+      params.avg = params.timeSum / params.done;
+      console.dir(params);
+    }
+  }
+  process.exit();
 }
 
 setTimeout(() => {
   console.log('Too long time');
   process.exit();
-}, 10000);
+}, 30000);
