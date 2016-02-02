@@ -22,6 +22,7 @@
   "dependencies": {
     "bunyan": "^1.5.1",
     "datadog-metrics": "^0.2.1",
+    "dogapi": "^1.1.0",
     "dotenv": "0.5.1",
     "electrolyte": "^0.2.0",
     "express": "^4.13.4",

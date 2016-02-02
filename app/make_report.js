@@ -7,7 +7,7 @@ const options = {
   api_key: '5a745555c4564194a7bece51d619a033',
   app_key: '257eaa2e568849f86ac765137411959df31ec6b8',
 };
-let queries = ['createPost', 'updatePost', 'getUserInfo', 'getUserPosts', 'getUserFriends', 'getUserFriendPosts', 'allQueries'];
+let queries = ['createPost', 'updatePost', 'getUserPosts', 'getUserFriends', 'getUserFriendPosts', 'allQueries'];
 
 dogapi.initialize(options);
 
@@ -117,7 +117,9 @@ function writeReport() {
         done: 0,
         timeSum: 0,
         min: 100,
-        max: -1
+        max: -1,
+        start: reports[i].start,
+        end: reports[i].end,
       };
       for (let timepoint = 0; timepoint < reports[i][queries[currentQueryId]].done.length; timepoint++) {
         let min = parseFloat(reports[i][queries[currentQueryId]].min[timepoint][1]);
@@ -148,7 +150,7 @@ setTimeout(() => {
 
 function writeCVS(data) {
 
-  let fields = ['tags[0]', 'url', 'type', 'min', 'max', 'avg', 'done'];
+  let fields = ['tags[0]', 'url', 'start', 'end', 'type', 'min', 'max', 'avg', 'done'];
   json2csv({data: data, fields: fields}, function(err, csv) {
     if (err) console.log(err);
     console.log(csv);
