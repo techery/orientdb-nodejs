@@ -107,13 +107,13 @@ function writeReport() {
         reports[i][queries[currentQueryId]].avg.shift();
         reports[i].start = reports[i][queries[currentQueryId]].done[0][0];
       }
-      while (reports[i][queries[currentQueryId]].done[reports[i][queries[currentQueryId]].length - 1][1] === 0) {
+      while (reports[i][queries[currentQueryId]].done[reports[i][queries[currentQueryId]].done.length - 1][1] === 0) {
         reports[i][queries[currentQueryId]].done.pop();
         reports[i][queries[currentQueryId]].min.pop();
         reports[i][queries[currentQueryId]].max.pop();
         reports[i][queries[currentQueryId]].avg.pop();
         reports[i].end--;
-        reports[i].end = reports[i][queries[currentQueryId]].done[reports[i][queries[currentQueryId]].length - 1][0];
+        reports[i].end = reports[i][queries[currentQueryId]].done[reports[i][queries[currentQueryId]].done.length - 1][0];
       }
 
       let params = {
