@@ -1,0 +1,4 @@
+50000 5 http://localhost:8000/?chance[getUserPosts]=12&chance[getUserFriends]=16&chance[getUserFriendPosts]=52&chance[createPost]=5&chance[updatePost]=15
+50000 20 http://localhost:8000/?chance[getUserPosts]=12&chance[getUserFriends]=16&chance[getUserFriendPosts]=52&chance[createPost]=5&chance[updatePost]=15
+50000 50 http://localhost:8000/?chance[getUserPosts]=12&chance[getUserFriends]=16&chance[getUserFriendPosts]=52&chance[createPost]=5&chance[updatePost]=15
+50000 100 http://localhost:8000/?chance[getUserPosts]=12&chance[getUserFriends]=16&chance[getUserFriendPosts]=52&chance[createPost]=5&chance[updatePost]=15

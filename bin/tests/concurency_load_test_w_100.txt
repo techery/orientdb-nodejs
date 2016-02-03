@@ -1,0 +1,4 @@
+50000 5 http://localhost:8000/?chance[createPost]=25&chance[updatePost]=75
+50000 20 http://localhost:8000/?chance[createPost]=25&chance[updatePost]=75
+50000 50 http://localhost:8000/?chance[createPost]=25&chance[updatePost]=75
+50000 100 http://localhost:8000/?chance[createPost]=25&chance[updatePost]=75
