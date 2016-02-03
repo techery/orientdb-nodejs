@@ -5,7 +5,6 @@ exports = module.exports = function(cluster, settings, logger, metrics) {
     allQueries: {timeFrames: [], processing: 0, errors: 0},
     createPost: {timeFrames: [], processing: 0, errors: 0},
     updatePost: {timeFrames: [], processing: 0, errors: 0},
-    getUserInfo: {timeFrames: [], processing: 0, errors: 0},
     getUserPosts: {timeFrames: [], processing: 0, errors: 0},
     getUserFriends: {timeFrames: [], processing: 0, errors: 0},
     getUserFriendPosts: {timeFrames: [], processing: 0, errors: 0},
