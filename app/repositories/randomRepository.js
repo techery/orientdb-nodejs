@@ -47,7 +47,7 @@ exports = module.exports = function(db, generator) {
     }
 
     getUserFriendPosts() {
-      return `SELECT expand(both('FriendsWith').out('HasPost')) FROM 12:${getRandomInt(1, 600000)} ORDER BY created_at DESC LIMIT 50`;
+      return `SELECT expand(both('FriendsWith').out('HasPost')) FROM  ORDER BY created_at DESC LIMIT 50`;
     }
   }
 
@@ -66,4 +66,8 @@ exports['@require'] = ['db', 'lorem-ipsum'];
  */
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function getRandomUser(chunk) {
+  return `12:${getRandomInt(1, 600000)}`
 }
