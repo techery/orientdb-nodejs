@@ -41,8 +41,8 @@ dogapi.event.query(then, now, parameters, function(err, res) {
     }
     if (end.text === start.text) {
       reports.push({
-        start: start.date_happened - 5,
-        end: end.date_happened + 5,
+        start: start.date_happened - 15,
+        end: end.date_happened + 15,
         url: start.text,
         tags: start.tags
       });
@@ -95,19 +95,20 @@ function writeReport() {
     for (let currentQueryId = 0; currentQueryId < queries.length; currentQueryId++) {
       //cleaning empty data
       if (!reports[i][queries[currentQueryId]].done) continue;
-      while (reports[i][queries[currentQueryId]].done[0] === 0) {
+      while (reports[i][queries[currentQueryId]].done[0][1] === 0) {
         reports[i][queries[currentQueryId]].done.shift();
         reports[i][queries[currentQueryId]].min.shift();
         reports[i][queries[currentQueryId]].max.shift();
         reports[i][queries[currentQueryId]].avg.shift();
-        reports[i].start++;
+        reports[i].start = reports[i][queries[currentQueryId]].done[0][0];
       }
-      while (reports[i][queries[currentQueryId]].done[reports[i][queries[currentQueryId]].length - 1] === 0) {
+      while (reports[i][queries[currentQueryId]].done[reports[i][queries[currentQueryId]].length - 1][1] === 0) {
         reports[i][queries[currentQueryId]].done.pop();
         reports[i][queries[currentQueryId]].min.pop();
         reports[i][queries[currentQueryId]].max.pop();
         reports[i][queries[currentQueryId]].avg.pop();
         reports[i].end--;
+        reports[i].end = reports[i][queries[currentQueryId]].done[reports[i][queries[currentQueryId]].length - 1][0];
       }
 
       let params = {
@@ -121,10 +122,11 @@ function writeReport() {
         start: reports[i].start,
         end: reports[i].end,
       };
+      let step = reports[i][queries[currentQueryId]].done[1] - reports[i][queries[currentQueryId]].done[0];
       for (let timepoint = 0; timepoint < reports[i][queries[currentQueryId]].done.length; timepoint++) {
         let min = parseFloat(reports[i][queries[currentQueryId]].min[timepoint][1]);
         let max = parseFloat(reports[i][queries[currentQueryId]].max[timepoint][1]);
-        let done = parseFloat(reports[i][queries[currentQueryId]].done[timepoint][1]);
+        let done = Math.round(parseFloat(reports[i][queries[currentQueryId]].done[timepoint][1]) * step);
         let timeAvg = parseFloat(reports[i][queries[currentQueryId]].avg[timepoint][1]);
         params.done = params.done + done;
         params.timeSum = params.timeSum + done * timeAvg;
