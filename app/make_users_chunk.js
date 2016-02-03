@@ -10,7 +10,7 @@ let db = IoC.create('db');
 let friendCountMin = 100;
 let friendCountMax = 105;
 let userCount = 1000;
-let fileName = 'app/repositories/chunk_1.json';
+let fileName = 'app/repositories/chunk_100.json';
 
 let query = `select r, size from
  (select @rid as r, both('FriendsWith').size() AS size from WVUser WHERE @rid > #12:2)
@@ -19,7 +19,8 @@ let query = `select r, size from
 db.query(query).then((result) => {
   let users = [];
   result.forEach((element, index, array)=> {
-    users.push({id: element.r.position, friendCoutn: element.size});
+    //users.push({id: element.r.position, friendCoutn: element.size});
+    users.push(element.r.position);
   });
   fs.writeFile(fileName, JSON.stringify(users), function(err) {
     if (err) throw err;
@@ -27,5 +28,3 @@ db.query(query).then((result) => {
     process.exit();
   });
 }).catch((e) => console.log(e));
-//let users = require('./repositories/chunk_1.json');
-//console.log(users.length);

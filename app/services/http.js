@@ -26,7 +26,7 @@ exports = module.exports = function(express, randomRepository, settings) {
         }
         process.send({type: 'start', queryType: queryType});
         let startTime = process.hrtime();
-        randomRepository.query(queryType)
+        randomRepository.query(queryType, req.query.chunk)
           .then((r) => {
             let timing = process.hrtime(startTime);
             process.send({type: 'end', queryType: queryType, time: timing[0] * 1e9 + timing[1]});

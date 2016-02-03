@@ -1,5 +1,7 @@
 'use strict';
 
+let chunk_100 = require('./chunk_100.json');
+
 exports = module.exports = function(db, generator) {
   class randomRepository {
     constructor(db) {
@@ -7,21 +9,20 @@ exports = module.exports = function(db, generator) {
       this.knownQueryTypes = [
         'createPost',
         'updatePost',
-        'getUserInfo',
         'getUserPosts',
         'getUserFriends',
         'getUserFriendPosts',
       ];
     }
 
-    query(queryType) {
-      let currentQuery = this[queryType]();
+    query(queryType, chunk) {
+      let currentQuery = this[queryType](chunk);
       return this.db.query(currentQuery).then(() => queryType);
     }
 
-    createPost() {
+    createPost(chunk) {
       return `select createPost(
-                #12:${getRandomInt(1, 600000)},
+                ${getRandomUser(chunk)},
                 ${getRandomInt(10000, 9999999)},
                 '${generator({count: 1, units: 'sentences'})}',
                 '${generator({count: 5, units: 'sentences'})}',
@@ -30,24 +31,24 @@ exports = module.exports = function(db, generator) {
             )`;
     }
 
-    updatePost() {
+    updatePost(chunk) {
       return `UPDATE Post SET short_description='Updated' WHERE @rid = #32:${getRandomInt(1, 60000000)}`;
     }
 
-    getUserInfo() {
-      return `SELECT FROM 12:${getRandomInt(1, 600000)}`;
+    getUserInfo(chunk) {
+      return `SELECT FROM ${getRandomUser(chunk)}`;
     }
 
-    getUserPosts() {
-      return `SELECT expand(out('HasPost')) FROM 12:${getRandomInt(1, 600000)} ORDER BY created_at DESC LIMIT 50`;
+    getUserPosts(chunk) {
+      return `SELECT expand(out('HasPost')) FROM ${getRandomUser(chunk)} ORDER BY created_at DESC LIMIT 50`;
     }
 
-    getUserFriends() {
-      return `SELECT expand(both('FriendsWith')) FROM 12:${getRandomInt(1, 600000)} LIMIT 100`;
+    getUserFriends(chunk) {
+      return `SELECT expand(both('FriendsWith')) FROM ${getRandomUser(chunk)} LIMIT 100`;
     }
 
-    getUserFriendPosts() {
-      return `SELECT expand(both('FriendsWith').out('HasPost')) FROM  ORDER BY created_at DESC LIMIT 50`;
+    getUserFriendPosts(chunk) {
+      return `SELECT expand(both('FriendsWith').out('HasPost')) FROM ${getRandomUser(chunk)} ORDER BY created_at DESC LIMIT 50`;
     }
   }
 
@@ -69,5 +70,12 @@ function getRandomInt(min, max) {
 }
 
 function getRandomUser(chunk) {
-  return `12:${getRandomInt(1, 600000)}`
+  let userId;
+  switch(chunk) {
+    case 100:
+      userId = chunk_100[Math.floor(Math.random()*chunk_100.length)];
+    default:
+      userId = getRandomInt(1, 600000);
+  }
+  return `12:${userId}`;
 }
