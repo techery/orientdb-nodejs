@@ -126,7 +126,7 @@ function writeReport() {
         start: reports[i].start,
         end: reports[i].end,
       };
-      let step = reports[i][queries[currentQueryId]].done[1][1] - reports[i][queries[currentQueryId]].done[0][1];
+      let step = reports[i][queries[currentQueryId]].done[1][0] - reports[i][queries[currentQueryId]].done[0][0];
       for (let timepoint = 0; timepoint < reports[i][queries[currentQueryId]].done.length; timepoint++) {
         let min = parseFloat(reports[i][queries[currentQueryId]].min[timepoint][1]);
         let max = parseFloat(reports[i][queries[currentQueryId]].max[timepoint][1]);
