@@ -11,8 +11,9 @@ let queries = ['createPost', 'updatePost', 'getUserPosts', 'getUserFriends', 'ge
 
 dogapi.initialize(options);
 
-let now = parseInt(new Date().getTime() / 1000) - 60 * 60 * 10 * 1 - 60 * 20;
-let then = now - 60 * 60 * 2 * 1;
+let now = parseInt(new Date().getTime() / 1000);
+let then = now - 60 * 5;
+//let then = now - 60 * 60 * 2 * 1;
 let callbackCount;
 let parameters = {
   tags: "environment:test",
