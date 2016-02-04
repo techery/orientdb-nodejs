@@ -98,8 +98,10 @@ function writeReport() {
   let result = [];
   for (let i = 0; i < reports.length; i++) {
     for (let currentQueryId = 0; currentQueryId < queries.length; currentQueryId++) {
-      //cleaning empty data
-      if (!reports[i][queries[currentQueryId]].done) continue;
+      if(!reports[i][queries[currentQueryId]].done || reports[i][queries[currentQueryId]].done.length < 2) {
+        console.log(`we haven't data about ${queries[currentQueryId]}`);
+        continue;
+      }
       let params = {
         type: queries[currentQueryId],
         url: reports[i].url,
