@@ -16,7 +16,7 @@ dogapi.initialize(options);
 
 // year, month (from 0), day, time
 let start = parseInt(new Date(2016,1,3,23,7,0).getTime() / 1000);
-let end = start + 60 * 60 * 2;
+let end = start + 60 * 60 * 2в;
 
 let callbackCount;
 let parameters = {
@@ -100,21 +100,6 @@ function writeReport() {
     for (let currentQueryId = 0; currentQueryId < queries.length; currentQueryId++) {
       //cleaning empty data
       if (!reports[i][queries[currentQueryId]].done) continue;
-      while (reports[i][queries[currentQueryId]].done[0][1] === 0) {
-        reports[i][queries[currentQueryId]].done.shift();
-        reports[i][queries[currentQueryId]].min.shift();
-        reports[i][queries[currentQueryId]].max.shift();
-        reports[i][queries[currentQueryId]].avg.shift();
-        reports[i].start = reports[i][queries[currentQueryId]].done[0][0];
-      }
-      while (reports[i][queries[currentQueryId]].done[reports[i][queries[currentQueryId]].done.length - 1][1] === 0) {
-        reports[i][queries[currentQueryId]].done.pop();
-        reports[i][queries[currentQueryId]].min.pop();
-        reports[i][queries[currentQueryId]].max.pop();
-        reports[i][queries[currentQueryId]].avg.pop();
-        reports[i].end--;
-        reports[i].end = reports[i][queries[currentQueryId]].done[reports[i][queries[currentQueryId]].done.length - 1][0];
-      }
       let params = {
         type: queries[currentQueryId],
         url: reports[i].url,
