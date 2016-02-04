@@ -15,8 +15,8 @@ dogapi.initialize(options);
 //let then = now - 60 * 60 * 1 * 1 - 60 * 50;
 
 // year, month (from 0), day, time
-let now = parseInt(new Date(2016,1,3,0,5,0).getTime() / 1000);
-let then = now - 60 * 50;
+let now = parseInt(new Date(2016,1,4,0,38,0).getTime() / 1000);
+let then = now - 60 * 95;
 
 let callbackCount;
 let parameters = {
