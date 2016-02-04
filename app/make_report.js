@@ -15,8 +15,8 @@ dogapi.initialize(options);
 //let then = now - 60 * 60 * 1 * 1 - 60 * 50;
 
 // year, month (from 0), day, time
-let now = parseInt(new Date(2016,1,4,0,38,0).getTime() / 1000);
-let then = now - 60 * 95;
+let start = parseInt(new Date(2016,1,3,23,7,0).getTime() / 1000);
+let end = now + 60 * 100;
 
 let callbackCount;
 let parameters = {
@@ -25,7 +25,7 @@ let parameters = {
 };
 let reports = [];
 
-dogapi.event.query(then, now, parameters, function(err, res) {
+dogapi.event.query(start, end, parameters, function(err, res) {
   res.events.sort((a, b) => {
     if (a.date_happened < b.date_happened)
       return -1;
