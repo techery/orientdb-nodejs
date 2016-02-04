@@ -16,7 +16,7 @@ dogapi.initialize(options);
 
 // year, month (from 0), day, time
 let start = parseInt(new Date(2016,1,3,23,7,0).getTime() / 1000);
-let end = start + 60 * 60 * 2;
+let end = start + 60 * 15;
 
 let callbackCount;
 let parameters = {
@@ -65,7 +65,7 @@ dogapi.event.query(start, end, parameters, function(err, res) {
     }
   }
   if (reports.length === 0) {
-    console.log('We have not cases');
+    console.log('We have no cases');
     process.exit();
   }
 });
