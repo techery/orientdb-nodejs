@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "node app/index.js",
-    "test": "node_modules/.bin/mocha",
-    "report": "node app/report.js",
-    "createTimeboard": "node app/create_timeboard.js"
+    "makeReport": "node app/make_report.js",
+    "createTimeboard": "node app/create_timeboard.js",
+    "makeChunk": "node app/create_timeboard.js",
   },
   "repository": {
     "type": "git",

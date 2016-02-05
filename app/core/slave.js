@@ -1,6 +1,6 @@
 'use strict';
 
-exports = module.exports = function(logger, http, randomRepository) {
+exports = module.exports = function(logger, http) {
   logger.info('New worker started');
 
   process.on('SIGTERM', stop);
@@ -13,4 +13,4 @@ exports = module.exports = function(logger, http, randomRepository) {
   }
 };
 
-exports['@require'] = ['logger', 'http',];
+exports['@require'] = ['logger', 'http'];
