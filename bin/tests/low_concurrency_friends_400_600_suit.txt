@@ -1,0 +1,7 @@
+100000 10 http://localhost:8000/?chance[getUserPosts]=12&chance[getUserFriends]=16&chance[getUserFriendPosts]=52&chance[createPost]=5&chance[updatePost]=15&chunk=400_600
+100000 20 http://localhost:8000/?chance[getUserPosts]=12&chance[getUserFriends]=16&chance[getUserFriendPosts]=52&chance[createPost]=5&chance[updatePost]=15&chunk=400_600
+100000 30 http://localhost:8000/?chance[getUserPosts]=12&chance[getUserFriends]=16&chance[getUserFriendPosts]=52&chance[createPost]=5&chance[updatePost]=15&chunk=400_600
+
+100000 10 http://localhost:8000/?chance[getUserPosts]=10&chance[getUserFriends]=13&chance[getUserFriendPosts]=47&chance[createPost]=10&chance[updatePost]=20&chunk=400_600
+100000 20 http://localhost:8000/?chance[getUserPosts]=10&chance[getUserFriends]=13&chance[getUserFriendPosts]=47&chance[createPost]=10&chance[updatePost]=20&chunk=400_600
+100000 30 http://localhost:8000/?chance[getUserPosts]=10&chance[getUserFriends]=13&chance[getUserFriendPosts]=47&chance[createPost]=10&chance[updatePost]=20&chunk=400_600
