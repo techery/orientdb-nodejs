@@ -7,7 +7,7 @@
     "start": "node app/index.js",
     "makeReport": "node app/make_report.js",
     "createTimeboard": "node app/create_timeboard.js",
-    "makeChunk": "node app/create_timeboard.js",
+    "makeChunk": "node app/create_timeboard.js"
   },
   "repository": {
     "type": "git",
