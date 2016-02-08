@@ -10,7 +10,7 @@ let db = IoC.create('db');
 let friendCountMin = 400;
 let friendCountMax = 600;
 let userCount = 1000;
-let fileName = 'app/repositories/chunk_400-600.json';
+let fileName = 'app/repositories/chunk_400_600.json';
 
 let query = `select r, size from
  (select @rid as r, both('FriendsWith').size() AS size from WVUser WHERE @rid > #12:2)
