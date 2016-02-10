@@ -5,4 +5,5 @@ exports = module.exports = function(OrientDB, settings) {
   return server.use(settings.dbName);
 };
 
+exports['@singleton'] = true;
 exports['@require'] = ['orientjs', 'settings'];
