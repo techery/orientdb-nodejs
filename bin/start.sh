@@ -30,8 +30,9 @@ requests=$1;
 concurrency=$2;
 url=$3;
 status='start';
+timeout=90
 echo 'Concurrency: ' $concurrency
 sendEvent;
-ab -n $requests -c $concurrency -l "$url"
+ab -n $requests -c $concurrency -l -s $timeout "$url"
 status='end';
 sendEvent;
