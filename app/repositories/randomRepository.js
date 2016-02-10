@@ -84,7 +84,7 @@ function getRandomUser(chunk) {
       userId = chunk_400_600[Math.floor(Math.random()*chunk_400_600.length)];
       break;
     default:
-      userId = getRandomInt(1, 600000);
+      userId = getRandomInt(1000, 600000);
   }
   return `12:${userId}`;
 }
