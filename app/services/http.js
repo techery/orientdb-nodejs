@@ -24,6 +24,11 @@ exports = module.exports = function(express, randomRepository, settings) {
             chance = chance - req.query.chance[queryType];
           }
         }
+
+        // @TODO fixme - queryType - undefined npm breaks
+        // queryType must be always one of requesting funcs
+
+        queryType = "getUserPosts";
         process.send({type: 'start', queryType: queryType});
         let startTime = process.hrtime();
         randomRepository.query(queryType, req.query.chunk)
