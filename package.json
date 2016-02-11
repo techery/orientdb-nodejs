@@ -4,7 +4,7 @@
   "description": "For testing work with orientdb",
   "main": "index.js",
   "scripts": {
-    "start": "cservice app/index.js --accessKey lksjdf982734",
+    "start": "node app/index.js",
     "makeReport": "node app/make_report.js",
     "createTimeboard": "node app/create_timeboard.js",
     "makeChunk": "node app/create_timeboard.js"
@@ -28,8 +28,7 @@
     "express": "^4.13.4",
     "json2csv": "^3.1.0",
     "lorem-ipsum": "^1.0.3",
-    "orientjs": "^2.1.0",
-    "cluster-service": ">=0.5.0"
+    "orientjs": "^2.1.0"
   },
   "devDependencies": {
     "mocha": "^2.3.3",
