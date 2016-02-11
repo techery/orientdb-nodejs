@@ -13,6 +13,7 @@ exports = module.exports = function(db, generator) {
         'getUserPosts',
         'getUserFriends',
         'getUserFriendPosts',
+        'addFriend'
       ];
     }
 
@@ -26,7 +27,7 @@ exports = module.exports = function(db, generator) {
                 ${getRandomUser(chunk)},
                 ${getRandomInt(10000, 9999999)},
                 '${generator({count: 1, units: 'sentences'})}',
-                '${generator({count: 5, units: 'sentences'})}',
+                '${generator({count: 2, units: 'sentences'})}',
                 '${generator({count: 1, units: 'words'})}',
                 '${new Date().toISOString().replace('T', ' ').substr(0, 19)}'
             )`;
@@ -51,6 +52,10 @@ exports = module.exports = function(db, generator) {
     getUserFriendPosts(chunk) {
       return `SELECT expand(both('FriendsWith').out('HasPost')) FROM ${getRandomUser(chunk)} ORDER BY created_at DESC LIMIT 50`;
     }
+
+    addFriend(chunk){
+      return `SELECT addFriend('#12:${getRandomInt(10000, 45000)}', '#12:${getRandomInt(45000, 100000)}')`;
+    }
   }
 
   return new randomRepository(db);
@@ -69,6 +74,7 @@ exports['@require'] = ['db', 'lorem-ipsum'];
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+
 
 function getRandomUser(chunk) {
   let userId;

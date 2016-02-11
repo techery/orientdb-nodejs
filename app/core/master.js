@@ -8,6 +8,7 @@ exports = module.exports = function(cluster, settings, logger, metrics) {
     getUserPosts: {timeFrames: [], processing: 0, errors: 0},
     getUserFriends: {timeFrames: [], processing: 0, errors: 0},
     getUserFriendPosts: {timeFrames: [], processing: 0, errors: 0},
+    addFriend: {timeFrames: [], processing: 0, errors: 0},
   }
 
   for (var i = 0; i < settings.workerCount; i++) {
