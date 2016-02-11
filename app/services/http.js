@@ -11,10 +11,10 @@ exports = module.exports = function(express, randomRepository, settings) {
     start() {
 
       this.app.get('/go/*', function(req, res) {
-        
+
         let sum = 0;
         let queryType;
-        
+
         for (queryType in req.query.chance) {
           if(randomRepository.knownQueryTypes.indexOf(queryType) === -1) {
             res.send(`Unknown query type ${queryType}`).end();
@@ -32,10 +32,6 @@ exports = module.exports = function(express, randomRepository, settings) {
           }
         }
 
-        // @TODO fixme - queryType - undefined npm breaks
-        // queryType must be always one of requesting funcs
-
-        queryType = "addFriend";
         process.send({type: 'start', queryType: queryType});
         let startTime = process.hrtime();
 
