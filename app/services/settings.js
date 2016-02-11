@@ -5,8 +5,7 @@ exports = module.exports = function() {
     appName: _getEnv('ENV_NAME', 'OrintDBPerfomanceTester'),
     environment: _getEnv('NODE_ENV', 'local'),
     port: _getEnv('ENV_PORT', 8000),
-    //workerCount: _getEnv('NUMBER_OF_WORKERS', require('os').cpus().length),
-    workerCount: 16,
+    workerCount: _getEnv('NUMBER_OF_WORKERS', require('os').cpus().length),
     intervalOfWorkerCheck: _getEnv('INTERVAL_OF_WORKER_CHECK_MS', 1000),
     dbParams: {
       host: _getEnv('DB_HOST', '52.35.253.219'),
