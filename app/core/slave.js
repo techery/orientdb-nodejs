@@ -1,6 +1,8 @@
 'use strict';
 
 exports = module.exports = function(logger, http) {
+  
+  http.start();
   logger.info('New worker started');
 
   process.on('SIGTERM', stop);
