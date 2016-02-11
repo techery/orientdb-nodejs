@@ -1,0 +1,2 @@
+7000000 20 http://localhost:8000/go/?chance[addFriend]=50&chance[createPost]=50
+7000000 20 http://localhost:8000/go/?chance[addFriend]=50&chance[createPost]=50
