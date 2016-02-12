@@ -1,7 +1,6 @@
 'use strict';
 
-let chunk_80_150 = require('./chunk_80_150.json');
-let chunk_400_600 = require('./chunk_400_600.json');
+let chunk_20_1000 = require('./chunk_20_1000.json');
 
 exports = module.exports = function(db, generator) {
   class randomRepository {
@@ -79,14 +78,11 @@ function getRandomInt(min, max) {
 function getRandomUser(chunk) {
   let userId;
   switch(chunk) {
-    case '80_150':
+    case '20_1000':
       userId = chunk_80_150[Math.floor(Math.random()*chunk_80_150.length)];
       break;
-    case '400_600':
-      userId = chunk_400_600[Math.floor(Math.random()*chunk_400_600.length)];
-      break;
     default:
-      userId = getRandomInt(100000, 120000);
+      userId = getRandomInt(1, 1);
   }
   return `12:${userId}`;
 }
