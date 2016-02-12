@@ -14,6 +14,6 @@
 50000 20 http://localhost:8000/go/?chance[getUserPosts]=3&chance[getUserFriends]=4&chance[getUserFriendPosts]=13&chance[createPost]=20&chance[updatePost]=60&chunk=20_1000
 50000 50 http://localhost:8000/go/?chance[getUserPosts]=3&chance[getUserFriends]=4&chance[getUserFriendPosts]=13&chance[createPost]=20&chance[updatePost]=60&chunk=20_1000
 
-s50000 5 http://localhost:8000/go/?chance[createPost]=25&chance[updatePost]=75&chunk=20_1000
+50000 5 http://localhost:8000/go/?chance[createPost]=25&chance[updatePost]=75&chunk=20_1000
 50000 20 http://localhost:8000/go/?chance[createPost]=25&chance[updatePost]=75&chunk=20_1000
 50000 50 http://localhost:8000/go/?chance[createPost]=25&chance[updatePost]=75&chunk=20_1000
