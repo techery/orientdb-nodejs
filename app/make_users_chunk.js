@@ -7,18 +7,18 @@ var fs = require('fs');
 
 
 let db = IoC.create('db');
-let friendCountMin = 10;
-let friendCountMax = 1500;
+let friendCountMin = 20;
+let friendCountMax = 1000;
 
-let postCountMin = 25;
-let postCountMax = 1500;
+let postCountMin = 50;
+let postCountMax = 1000;
 let userCount = 100000;
 let fileName = `app/repositories/chunk_${friendCountMin}_${friendCountMax}.json`;
 
 let query = `SELECT r
   FROM
   (
-    SELECT @rid as r, both('FriendsWith').size() AS sizef, both('HasPost').size() AS sizep
+    SELECT @rid as r, both('FriendsWith').size() AS sizef, out('HasPost').size() AS sizep
     FROM
     WVUser WHERE @rid > #12:1
   )
