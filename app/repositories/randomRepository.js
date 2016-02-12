@@ -54,7 +54,7 @@ exports = module.exports = function(db, generator) {
     }
 
     addFriend(chunk){
-      return `SELECT addFriend('#12:${getRandomInt(10000, 45000)}', '#12:${getRandomInt(45000, 100000)}')`;
+      return `SELECT addFriend('#12:${getRandomInt(100000, 110000)}', '#12:${getRandomInt(110001, 120000)}')`;
     }
   }
 
