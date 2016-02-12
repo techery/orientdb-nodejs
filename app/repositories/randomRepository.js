@@ -79,7 +79,8 @@ function getRandomUser(chunk) {
   let userId;
   switch(chunk) {
     case '20_1000':
-      userId = chunk_80_150[Math.floor(Math.random()*chunk_80_150.length)];
+      console.log(chunk);
+      userId = chunk_20_1000[Math.floor(Math.random()*chunk_20_1000.length)];
       break;
     default:
       userId = getRandomInt(1, 1);
