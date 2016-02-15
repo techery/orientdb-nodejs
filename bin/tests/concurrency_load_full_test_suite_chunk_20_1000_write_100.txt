@@ -1,0 +1,3 @@
+250000 5 http://localhost:8000/go/?chance[createPost]=25&chance[updatePost]=75&chunk=20_1000
+250000 20 http://localhost:8000/go/?chance[createPost]=25&chance[updatePost]=75&chunk=20_1000
+250000 50 http://localhost:8000/go/?chance[createPost]=25&chance[updatePost]=75&chunk=20_1000
